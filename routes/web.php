@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LivewireTestController;
 use App\Http\Controllers\AlpineTestController;
+use Laravel\Jetstream\Rules\Role;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,6 +29,22 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+Route::prefix('manager')
+->middleware('can:manager-higher')
+->group(function(){
+    Route::get('index', function () {
+        dd('manager');
+    });
+});
+
+Route::middleware('can:user-higher')
+->group(function(){
+    Route::get('index', function () {
+        dd('user');
+    });
+});
+
 
 Route::controller(LivewireTestController::class)
 ->prefix('livewire-test')->group(function(){
