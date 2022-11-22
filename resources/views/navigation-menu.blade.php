@@ -20,6 +20,10 @@
                     <x-jet-nav-link href="{{ route('events.index') }}" :active="request()->routeIs('events.index')">
                         イベント管理
                     </x-jet-nav-link>
+
+                    <x-jet-nav-link href="{{ route('events.past') }}" :active="request()->routeIs('events.past')">
+                        過去イベント一覧
+                    </x-jet-nav-link>
                     @endcan
 
                 </div>
@@ -120,7 +124,7 @@
                                 @csrf
 
                                 <x-jet-dropdown-link href="{{ route('logout') }}"
-                                         @click.prevent="$root.submit();">
+                                        @click.prevent="$root.submit();">
                                     {{ __('Log Out') }}
                                 </x-jet-dropdown-link>
                             </form>
@@ -151,6 +155,10 @@
             @can('manager-higher')
             <x-jet-responsive-nav-link href="{{ route('events.index') }}" :active="request()->routeIs('events.index')">
                 イベント管理
+            </x-jet-responsive-nav-link>
+
+            <x-jet-responsive-nav-link href="{{ route('events.past') }}" :active="request()->routeIs('events.past')">
+                過去イベント一覧
             </x-jet-responsive-nav-link>
             @endcan
 

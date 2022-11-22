@@ -14,7 +14,16 @@ class EventService
     ->whereTime('end_date', '>', $startTime)
     ->whereTime('start_date', '<', $endTime)
     ->exists();
+  }
 
+  //edit重複　件数取得
+  public static function countEventDuplication($eventDate, $startTime, $endTime)
+  {
+    return DB::table('events')
+    ->whereDate('start_date', $eventDate) //日にち
+    ->whereTime('end_date', '>', $startTime)
+    ->whereTime('start_date', '<', $endTime)
+    ->count();
   }
 
   public static function joinDateAndTime($date, $time)
