@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use App\Models\User;
 
 class Event extends Model
 {
@@ -28,7 +29,7 @@ class Event extends Model
 
     }
 
-    //edit用に変換している。
+    //edit用に日付・時間を変換している。
     protected function editEventDate(): Attribute   
     {
         return new Attribute(
@@ -49,4 +50,12 @@ class Event extends Model
             get: fn() => Carbon::parse($this->end_date)->format('H時間i分')
         );
     }
+
+    //リレーション
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'reservations')
+        ->withPivot('id', 'number_of_people', 'canceled_date');
+    }
+
 }
