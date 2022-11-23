@@ -4,7 +4,7 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center">
+                <div class="w-16 shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
                         <x-jet-application-mark class="block h-9 w-auto" />
                     </a>
@@ -13,8 +13,19 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        ホーム画面
                     </x-jet-nav-link>
+
+                    @can('manager-higher')
+                    <x-jet-nav-link href="{{ route('events.index') }}" :active="request()->routeIs('events.index')">
+                        本日以降イベント一覧
+                    </x-jet-nav-link>
+
+                    <x-jet-nav-link href="{{ route('events.past') }}" :active="request()->routeIs('events.past')">
+                        過去イベント一覧
+                    </x-jet-nav-link>
+                    @endcan
+
                 </div>
             </div>
 
@@ -113,7 +124,7 @@
                                 @csrf
 
                                 <x-jet-dropdown-link href="{{ route('logout') }}"
-                                         @click.prevent="$root.submit();">
+                                        @click.prevent="$root.submit();">
                                     {{ __('Log Out') }}
                                 </x-jet-dropdown-link>
                             </form>
@@ -138,8 +149,19 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-jet-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                ホーム画面
             </x-jet-responsive-nav-link>
+
+            @can('manager-higher')
+            <x-jet-responsive-nav-link href="{{ route('events.index') }}" :active="request()->routeIs('events.index')">
+                イベント管理
+            </x-jet-responsive-nav-link>
+
+            <x-jet-responsive-nav-link href="{{ route('events.past') }}" :active="request()->routeIs('events.past')">
+                過去イベント一覧
+            </x-jet-responsive-nav-link>
+            @endcan
+
         </div>
 
         <!-- Responsive Settings Options -->

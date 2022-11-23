@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LivewireTestController;
+use App\Http\Controllers\AlpineTestController;
+use App\Http\Controllers\EventController;
+use Laravel\Jetstream\Rules\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,8 +17,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('calendar');
 });
 
 Route::middleware([
@@ -26,3 +34,27 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+//manager 追加
+Route::prefix('manager')
+->middleware('can:manager-higher')
+->group(function(){
+    Route::get('events/past', [EventController::class, 'past'])->name('events.past');
+    Route::resource('events', EventController::class);
+});
+
+Route::middleware('can:user-higher')
+->group(function(){
+    Route::get('index', function () {
+        dd('user');
+    });
+});
+
+
+Route::controller(LivewireTestController::class)
+->prefix('livewire-test')->group(function(){
+    Route::get('index', 'index')->name('livewire-test.index');
+    Route::get('register', 'register')->name('livewire-test.register');
+});
+
+Route::get('alpine-test/index', [AlpineTestController::class, 'index']);
