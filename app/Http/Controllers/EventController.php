@@ -20,7 +20,7 @@ class EventController extends Controller
     {
         $today = Carbon::today();
 
-        //人数を合計したクエリ
+        //人数を合計したクエリ 予約関連
         $reservedPeople = DB::table('reservations')
         ->select('event_id', DB::raw('sum(number_of_people) as number_of_people'))
         ->whereNull('canceled_date')
