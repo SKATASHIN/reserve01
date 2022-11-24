@@ -135,7 +135,9 @@ class EventController extends Controller
             $eventDate = $event->editEventDate;
             $startTime = $event->startTime;
             $endTime = $event->endTime;
+
             session()->flash('status', 'この時間帯の予約が既に存在します。');
+            
             return view('manager.events.edit',
             compact('event', 'eventDate', 'startTime', 'endTime'));
         }

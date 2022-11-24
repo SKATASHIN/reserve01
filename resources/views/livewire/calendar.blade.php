@@ -1,5 +1,5 @@
 <div>
-    <div class="text-center text-sm">
+    <div class="text-center pt-4 pb-4">
         日付を選択してください。本日から最大30日先まで選択可能です。
     </div>
         <input id="calendar" class="block mt-1 mb-2 mx-auto" 
@@ -7,7 +7,7 @@
         value="{{ $currentDate }}"
         wire:change="getDate($event.target.value)" />
     
-        <div class="flex border border-green-400 mx-auto">
+        <div class="flex mx-auto">
             <x-calendar-time />
             @for($i = 0; $i < 7; $i++)
             <div class="w-32">
