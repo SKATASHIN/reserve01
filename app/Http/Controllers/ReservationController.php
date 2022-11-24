@@ -20,7 +20,7 @@ class ReservationController extends Controller
     {
         $event = Event::findOrfail($id);
 
-        //イベントごとの予約人数を合計したクエリ 
+        //イベントごとの予約人数を合計したクエリ(予約している人数) 
         $reservedPeople = DB::table('reservations')
         ->select('event_id', DB::raw('sum(number_of_people) as number_of_people'))
         ->whereNull('canceled_date')
@@ -28,7 +28,7 @@ class ReservationController extends Controller
         ->having('event_id', $event->id)
         ->first();
 
-        //予約がある・ない場合の人数
+        //予約できる人数を取得
         if(!is_null($reservedPeople))
         {
             $reservedPeople = $event->max_people - $reservedPeople->number_of_people;
@@ -37,8 +37,15 @@ class ReservationController extends Controller
             $reservedPeople = $event->max_people;
         }
 
+        //ログインしているユーザーが該当イベントに予約しているか
+        $isReserved = Reservation::where('user_id', '=', Auth::id())
+        ->where('event_id', '=', $id)
+        ->where('canceled_date', '=', null)
+        ->latest() //最新　空の
+        ->first();
 
-        return view('event-detail', compact('event', 'reservedPeople'));
+
+        return view('event-detail', compact('event', 'reservedPeople', 'isReserved'));
     }
 
     public function reserve(Request $request)
